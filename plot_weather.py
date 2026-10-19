@@ -1,19 +1,21 @@
 import streamlit as st
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2 import service_account
 import pandas as pd
 import plotly.express as px
 import datetime as dt
 
 # --- Подключение ---
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+
+# Читаем ключ из Secrets
+creds_dict = dict(st.secrets["gcp_service_account"])
+creds = service_account.Credentials.from_service_account_info(creds_dict, scopes=scope)
 client = gspread.authorize(creds)
 
 sheet = client.open_by_key("1gd_j4lDsvdSS-fcsGMjwz3mvBNeKc1S6HYdCdTSKwAA").sheet1
 data = sheet.get_all_values()
-
-
 
 # --- DataFrame ---
 df = pd.DataFrame(data[1:], columns=[
