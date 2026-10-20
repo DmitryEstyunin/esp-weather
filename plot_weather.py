@@ -176,13 +176,17 @@ st.plotly_chart(with_rangeslider(fig4), width='stretch')
 
 # ---------- Освещённость ----------
 df_view['Lux_log'] = df_view['Lux'] + 1
-fig5 = px.line(df_view, x='Время', y='Lux', title='Освещённость (лк)')
+fig5 = px.line(df_view, x='Время', y='Lux', title='Освещённость (лк, log-шкала)')
 fig5.update_yaxes(type="log")
-add_thresholds(fig5, [
-    (100,  "тускло",     "orange"),
-    (300,  "комфорт",    "green"),
-    (1000, "очень ярко", "orange"),
-], unit=" лк")
+
+# Пороги (horizontal lines)
+fig5.add_hline(y=100, line_dash="dash", line_color="orange",
+               annotation_text="тускло", annotation_position="top right")
+fig5.add_hline(y=300, line_dash="dash", line_color="green",
+               annotation_text="комфорт", annotation_position="top right")
+fig5.add_hline(y=1000, line_dash="dash", line_color="orange",
+               annotation_text="очень ярко", annotation_position="top right")
+
 st.plotly_chart(with_rangeslider(fig5), width='stretch')
 
 # ---------- Газ (BME680) ----------
