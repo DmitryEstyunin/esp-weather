@@ -51,7 +51,9 @@ df.loc[df['CO2'] <= 10, 'CO2'] = pd.NA
 df.loc[df['Pressure'] <= 100, 'Pressure'] = pd.NA
 
 # Gas (BME680): сопротивление не может быть 0, 0 = сенсор не прогрет
-df.loc[df['Gas'] <= 0, 'Gas'] = pd.NA
+df.loc[df['Gas'] <= 10, 'Gas'] = pd.NA
+
+
 
 # PM: 0 допустим теоретически, но при отвале датчик даёт 0 или 65535 —
 # 65535 точно мусор, 0 оставляем (может быть реально чистый воздух)
@@ -173,7 +175,9 @@ add_thresholds(fig4, [
 st.plotly_chart(with_rangeslider(fig4), width='stretch')
 
 # ---------- Освещённость ----------
+df_view['Lux_log'] = df_view['Lux'] + 1
 fig5 = px.line(df_view, x='Время', y='Lux', title='Освещённость (лк)')
+fig5.update_yaxes(type="log")
 add_thresholds(fig5, [
     (100,  "тускло",     "orange"),
     (300,  "комфорт",    "green"),
