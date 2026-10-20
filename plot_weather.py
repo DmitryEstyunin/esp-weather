@@ -5,6 +5,7 @@ from google.oauth2 import service_account
 import pandas as pd
 import plotly.express as px
 import datetime as dt
+import math
 
 # --- Подключение ---
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
